@@ -22,8 +22,9 @@ document.addEventListener('all-yt-loaded', function() {
 				const responseJSON = response.responseJSON;
 				trackResult = getTopTrackResult(responseJSON, vidInfo.trackName, vidInfo.artist);
 				if (trackResult) {
+					console.log("[genie]: Found lyrics, setting lyrics");
 					setLyrics(trackResult);
-				} else if (vidInfo.isMusic) console.error("[genie]: Something went wrong");
+				} else if (vidInfo.isMusic) console.error("[genie]: No good result found for the track");
 			});
 		}
 
@@ -53,17 +54,10 @@ document.addEventListener("yt-navigate-finish", function() {
 function getTopTrackResult(responseJSON, trackName, artistName) {
 	const response = responseJSON.response.sections;
 	const trackResults = response[1];
-	// Default to using the first result
-	let topHit = trackResults.hits[0];
-
-	// Choose the result where artist name matches
-	for (let hit of trackResults.hits) {
-		const artists = hit.result.artist_names.split(", ");
-		if (artists.includes(artistName)) {
-			topHit = hit;
-			break;
-		}
-	}
+	
+	// Get the best matching track result
+	let topHit = getBestResult(trackResults, trackName, artistName);
+	if (!topHit) return null;
 
 	const hitData = topHit.result;
 
@@ -75,6 +69,28 @@ function getTopTrackResult(responseJSON, trackName, artistName) {
 	};
 
 	return topTrackData;
+}
+
+/**
+ * Returns the best result out of the returned results from Genius
+ * @param trackResults {Object} - Results from Genius
+ * @param trackName {String} - expected track name
+ * @param artistName {String} - expected artist name
+ *
+ * returns {Object} - Best result from the given results
+ */
+function getBestResult(trackResults, trackName, artistName) {
+	let topHit = trackResults.hits[0];
+
+	for (let hit of trackResults.hits) {
+		const artists = hit.result.artist_names.split(", ");
+		if (artists.includes(artistName)) {
+			topHit = hit;
+			break;
+		}
+	}
+
+	return topHit;
 }
 
 /**

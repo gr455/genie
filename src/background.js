@@ -16,7 +16,6 @@ chrome.runtime.onMessageExternal.addListener((request, sender, sendResponse) => 
 	}
 
 	else if (action === "get_annotation") {
-		console.log("bg for annottatintoos");
 		const response = geniusGetAnnotation(request.annotationURL)
 		.then((response) => { sendResponse(response); });
 	}
