@@ -1,7 +1,7 @@
 # Genie - Genius Lyrics on Youtube
 
 Genie is a chrome extension that puts Genius.com lyrics on youtube music videos.
-
+![Screenshot from 2021-12-21 18-02-14](https://user-images.githubusercontent.com/53974118/146931957-7d36a2cd-3e29-4b58-babb-487224bc8e2d.png)
 ## Installation
 
 #### Chrome Extension Store
