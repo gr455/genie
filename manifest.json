@@ -1,0 +1,26 @@
+{
+	"name": "Genie - Genius Lyrics on Youtube",
+	"version": "0.0.1",
+	"description": "Placeholder",
+	"manifest_version": 3,
+	"background": {
+		"service_worker": "src/background.js"
+	},
+	"content_scripts": [
+		{
+			"matches": ["*://*.youtube.com/*"],
+			"js": ["src/inject.js"]
+		}
+	],
+	"web_accessible_resources": [
+		{
+			"resources": ["src/content.js", "src/searchRules.js", "vendor/jquery.min.js", "views/lyricArea.html"],
+			"matches": ["*://*.youtube.com/*"]
+		}
+	],
+	"externally_connectable": {
+		"matches": ["*://*.youtube.com/*"]
+	},
+	"permissions": ["scripting"],
+	"host_permissions": ["*://*.youtube.com/*", "*://*.genius.com/*"]
+}
