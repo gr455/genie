@@ -1,7 +1,7 @@
 {
 	"name": "Genie - Genius Lyrics on Youtube",
 	"version": "0.0.1",
-	"description": "Placeholder",
+	"description": "Get Genius lyrics on Youtube with Genie",
 	"manifest_version": 3,
 	"background": {
 		"service_worker": "src/background.js"

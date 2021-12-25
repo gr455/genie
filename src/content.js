@@ -8,6 +8,10 @@ const ALL_YT_LOADED_EVENT = new Event("all-yt-loaded");
 document.addEventListener('all-yt-loaded', function() {
 	const vidInfo = getCurrentVideoInfo();
 	let trackResult;
+
+	// Sometimes the lyricsArea is loaded twice. So if one exists, do nothing
+	if ($(".lyricArea").length) return;
+
 	try {
 		// Only send to serviceworker if music
 		if (vidInfo.isMusic) {
@@ -37,6 +41,7 @@ document.addEventListener('all-yt-loaded', function() {
  * Listens until current video is loaded
  */
 document.addEventListener("yt-navigate-finish", function() {
+	console.log("[genie]: Starting up");
 	// Remove lyrics when video is switched
 	$(".lyricArea").remove();
 	let listenYTLoaded = setInterval(function() {

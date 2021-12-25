@@ -14,6 +14,7 @@ var searchRules = {
 		// If found substring value, ignore value
 		ignore: [
 			"(Official Music Video)",
+			"[Official Music Video]",
 			"(Official Video)",
 			"(Official Audio)",
 			"(Explicit)",
@@ -25,7 +26,8 @@ var searchRules = {
 	artists: {
 		// If found substring key replace by value
 		replace: {
-			"EminemMusic": "Eminem"
+			"EminemMusic": "Eminem",
+			"gotyemusic": "Gotye",
 		},
 
 		// If found substring value, ignore value
