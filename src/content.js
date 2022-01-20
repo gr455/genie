@@ -1,6 +1,8 @@
 const EXTENSION_ID = document.currentScript.getAttribute("extension-id");
 const ALL_YT_LOADED_EVENT = new Event("all-yt-loaded");
 
+var genieThisSetDone = false; 
+
 /**
  * When ALL_YT_LOADED_EVENT is fired, gets current video data, sends it to serviceworker,
  * listens for response from serviceworker (which fetches lyrics link from Genius).
@@ -8,9 +10,6 @@ const ALL_YT_LOADED_EVENT = new Event("all-yt-loaded");
 document.addEventListener('all-yt-loaded', function() {
 	const vidInfo = getCurrentVideoInfo();
 	let trackResult;
-
-	// Sometimes the lyricsArea is loaded twice. So if one exists, do nothing
-	if ($(".lyricArea").length) return;
 
 	try {
 		// Only send to serviceworker if music
@@ -42,12 +41,13 @@ document.addEventListener('all-yt-loaded', function() {
  */
 document.addEventListener("yt-navigate-finish", function() {
 	console.log("[genie]: Starting up");
+	genieThisSetDone = false;
 	// Remove lyrics when video is switched
 	$(".lyricArea").remove();
 	let listenYTLoaded = setInterval(function() {
 		const loaded = checkYTLoaded();
 		if (loaded) clearInterval(listenYTLoaded);
-	});
+	}, 500);
 });
 
 /**
@@ -256,9 +256,12 @@ function checkYTLoaded() {
 	if (!video) return false;
 	let videoTime = video.currentTime;
 	if (videoTime > 0) {
-		setTimeout(function () {
-			document.dispatchEvent(ALL_YT_LOADED_EVENT);
-		}, 500);
+		if (!genieThisSetDone) {
+			genieThisSetDone = true;
+			setTimeout(function () {
+				document.dispatchEvent(ALL_YT_LOADED_EVENT);
+			}, 500);
+		}
 
 		return true;
 	}
